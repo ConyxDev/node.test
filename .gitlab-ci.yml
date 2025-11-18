@@ -1,0 +1,13 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build
+
+build_docker:
+  stage: build
+  script:
+    - docker build -t chris/node2 .
+    - docker images chris/node2
