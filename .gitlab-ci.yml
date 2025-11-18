@@ -5,9 +5,21 @@ services:
 
 stages:
   - build
+  - deploy
 
-build_docker:
+variables:
+  IMAGE_NAME: chris/node
+
+build:
   stage: build
   script:
-    - docker build -t chris/node2 .
-    - docker images chris/node2
+    - docker build -t $IMAGE_NAME .
+    - docker images $IMAGE_NAME
+
+deploy:
+  stage: deploy
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $IMAGE_NAME
+  only:
+    - master
